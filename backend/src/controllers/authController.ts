@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { User } from "../db";
+import { Account, User } from "../db";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
@@ -17,12 +17,18 @@ export const signup = async (req: Request, res: Response) => {
     const { email, firstname, lastname, password } = req.body;
     if (status.success) {
       const hashPassword = await bcrypt.hash(password, 5);
-      await User.create({
+      const user = await User.create({
         email,
         firstname,
         lastname,
         password: hashPassword,
       });
+
+      await Account.create({
+        userId: user.id,
+        balance: Math.floor(Math.random() * 1000) + 1,
+      });
+
       res.status(200).json({
         message: "signup succefully!",
       });
@@ -66,3 +72,5 @@ export const signin = async (req: Request, res: Response) => {
     });
   }
 };
+
+

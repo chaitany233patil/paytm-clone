@@ -13,4 +13,10 @@ const userSchema = new Schema({
   password: { type: String, required: true },
 });
 
+const accoutSchema = new Schema({
+  balance: { type: Number, require: true },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+});
+
 export const User = model("User", userSchema);
+export const Account = model("Account", accoutSchema);
