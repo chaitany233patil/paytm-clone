@@ -5,42 +5,44 @@ import jwt from "jsonwebtoken";
 import { z } from "zod";
 
 const userSchema = z.object({
-  email: z.string({ required_error: "email Required!" }).email(),
-  firstname: z.string({ required_error: "firstname Required!" }),
-  lastname: z.string({ required_error: "lastname Required!" }),
-  password: z.string({ required_error: "password Required!" }).min(6).max(25),
+  email: z.string().email(),
+  firstname: z.string().min(1, "First name is required"),
+  lastname: z.string().min(1, "Last name is required"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
 export const signup = async (req: Request, res: Response) => {
   try {
-    const status = userSchema.safeParse(req.body);
-    const { email, firstname, lastname, password } = req.body;
-    if (status.success) {
-      const hashPassword = await bcrypt.hash(password, 5);
-      const user = await User.create({
-        email,
-        firstname,
-        lastname,
-        password: hashPassword,
-      });
-
-      await Account.create({
-        userId: user.id,
-        balance: Math.floor(Math.random() * 1000) + 1,
-      });
-
-      res.status(200).json({
-        message: "signup succefully!",
+    const result = userSchema.safeParse(req.body);
+    if (!result.success) {
+      res.status(400).json({
+        message: result.error.issues[0].message,
       });
       return;
     }
-    res.status(411).json({
-      //@ts-ignore
-      message: status.error.issues,
+
+    const { email, firstname, lastname, password } = result.data;
+
+    const hashPassword = await bcrypt.hash(password, 5);
+    const user = await User.create({
+      email,
+      firstname,
+      lastname,
+      password: hashPassword,
+    });
+
+    await Account.create({
+      userId: user.id,
+      balance: Math.floor(Math.random() * 1000) + 1,
+    });
+
+    res.status(200).json({
+      message: "Signup successfully!",
     });
   } catch (err) {
+    console.error(err);
     res.status(400).json({
-      message: "User already exist!",
+      message: "User already exists!",
     });
   }
 };
@@ -72,5 +74,3 @@ export const signin = async (req: Request, res: Response) => {
     });
   }
 };
-
-

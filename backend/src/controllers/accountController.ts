@@ -44,10 +44,10 @@ export const transfer = async (req: Request, res: Response) => {
       return;
     }
 
-    (sender.balance as number) -= amount;
+    (sender.balance as number) -= parseInt(amount);
     await sender.save();
 
-    (receiver.balance as number) += amount;
+    (receiver.balance as number) += parseInt(amount);
     await receiver.save();
 
     res.status(200).json({
