@@ -9,6 +9,12 @@ export const getAllUSers = async (req: Request, res: Response) => {
   });
 };
 
+export const getRecevier = async (req: Request, res: Response) => {
+  const { firstname } = req.body;
+  const user = await User.findOne({ firstname });
+  res.json({ username: user?.firstname, id: user?.id });
+};
+
 export const searchUsers = async (req: Request, res: Response) => {
   const { filter } = req.query;
   const users = await User.find({
