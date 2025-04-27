@@ -1,1 +1,1 @@
-{"root":["./custom.d.ts","./src/db.ts","./src/index.ts","./src/middleware.ts","./src/controllers/accountcontroller.ts","./src/controllers/authcontroller.ts","./src/routes/userroutes.ts"],"version":"5.7.3"}
+{"root":["./custom.d.ts","./src/db.ts","./src/index.ts","./src/middleware.ts","./src/controllers/accountcontroller.ts","./src/controllers/authcontroller.ts","./src/controllers/mecontroller.ts","./src/controllers/usercontroller.ts","./src/routes/userroutes.ts"],"version":"5.7.3"}

@@ -40,7 +40,6 @@ export const signup = async (req: Request, res: Response) => {
       message: "Signup successfully!",
     });
   } catch (err) {
-    console.error(err);
     res.status(400).json({
       message: "User already exists!",
     });
