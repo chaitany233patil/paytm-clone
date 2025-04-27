@@ -10,6 +10,7 @@ export function Dashboard() {
   const [users, setUsers] = useState<string[]>([]);
   const [username, setUsername] = useState("");
   const navigate = useNavigate();
+  // const [filter, setFilter] = useState([]);
 
   useEffect(() => {
     axios
@@ -39,9 +40,18 @@ export function Dashboard() {
       });
   }, []);
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //@ts-expect-error
+  async function search(e) {
+    const res = await axios.get<{ users: string[] }>(
+      `${BACKEND_URL}/bulk?filter=${e.target.value}`
+    );
+    setUsers(res.data.users);
+  }
+
   return (
     <div className="h-screen">
-      <NavBar username={username}/>
+      <NavBar username={username} />
       <div className="px-4 text-2xl mt-6 flex gap-4 items-center">
         <span className="font-bold">Your Balance</span> ${balance}
       </div>
@@ -51,6 +61,7 @@ export function Dashboard() {
           className="border-1 border-gray-300 p-2 w-full rounded-sm"
           type={"text"}
           placeholder={"Search users..."}
+          onChange={(e) => search(e)}
         />
       </div>
       <div className="px-4 mt-4">

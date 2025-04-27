@@ -56,7 +56,7 @@ export const signin = async (req: Request, res: Response) => {
         { id: user?._id },
         process.env.JWT_SECRETE as string,
         {
-          expiresIn: 60 * 60,
+          expiresIn: 60 * 60 * 60,
         }
       );
       res.status(200).json({
