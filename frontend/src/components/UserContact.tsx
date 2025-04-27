@@ -1,13 +1,15 @@
 import axios from "axios";
 import { BACKEND_URL } from "../config";
+import { useNavigate } from "react-router-dom";
 
 export function UserContact(props: { username: string; idx: number }) {
+  const navigate = useNavigate();
   async function transfer() {
-    console.log(props.username);
     const res = await axios.post(`${BACKEND_URL}/receiver`, {
       firstname: props.username,
     });
-    console.log(res.data);
+    localStorage.setItem("receiverId", JSON.stringify(res.data));
+    navigate("/transfer");
   }
 
   return (

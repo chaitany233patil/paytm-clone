@@ -22,6 +22,7 @@ export const getBalance = async (req: Request, res: Response) => {
 //transfer money
 export const transfer = async (req: Request, res: Response) => {
   const { to, amount } = req.body;
+  console.log(to, amount);
   const { userId } = req;
   const session = await mongoose.startSession();
   session.startTransaction();
